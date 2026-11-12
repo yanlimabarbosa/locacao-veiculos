@@ -13,6 +13,28 @@ Projeto prático da disciplina **Programação com Frameworks Web**. Sistema web
 - **Locações:** escolha de um veículo disponível, definição do período, cálculo do valor no backend, registro, histórico (ativas e finalizadas) e finalização (devolução).
 - Mensagens de sucesso e erro na interface para todas as operações.
 
+## Telas
+
+**Login**
+
+![Tela de login](docs/prints/01-login.png)
+
+**Veículos:** frota com status de disponibilidade, filtro e formulário de cadastro
+
+![Tela de veículos](docs/prints/02-veiculos.png)
+
+**Nova locação:** veículo escolhido, período e valor estimado (4 diárias, pois toda fração de 24h conta como diária)
+
+![Formulário de nova locação](docs/prints/03-nova-locacao.png)
+
+**Locação registrada:** aparece no histórico como ativa, com o valor calculado pelo backend e o botão de finalizar
+
+![Locação registrada](docs/prints/04-locacao-registrada.png)
+
+**Locação finalizada:** devolução registrada e veículo liberado novamente
+
+![Locação finalizada](docs/prints/05-locacao-finalizada.png)
+
 ## Tecnologias
 
 | Camada | Tecnologias |
