@@ -41,7 +41,7 @@ Projeto prático da disciplina **Programação com Frameworks Web**. Sistema web
 | --- | --- |
 | Backend | Node.js 20+, Express 5, TypeScript, Prisma ORM 7, MySQL 8, JWT (`jsonwebtoken`), `bcryptjs`, Zod |
 | Frontend | React 19, Vite, TypeScript, React Router, TanStack Query, Axios, React Hook Form + Zod, Tailwind CSS, Sonner |
-| Infra | Docker Compose (MySQL) |
+| Infra | Docker Compose (MySQL, API e frontend), Nginx |
 
 ## Requisitos para executar
 
@@ -49,7 +49,34 @@ Projeto prático da disciplina **Programação com Frameworks Web**. Sistema web
 - npm 10+
 - Docker e Docker Compose **ou** um MySQL 8 já instalado
 
-## Instalação e execução
+## Executar com Docker (modo build)
+
+Sobe tudo em containers: o MySQL, as migrations com o seed, a API compilada (`node dist/...`) e o build de produção do frontend servido pelo Nginx.
+
+```bash
+git clone https://github.com/yanlimabarbosa/locacao-veiculos.git
+cd locacao-veiculos
+docker compose up -d --build
+```
+
+| Serviço | Endereço |
+| --- | --- |
+| Frontend | `http://localhost:5173` |
+| API | `http://localhost:3333/api` |
+| MySQL | `localhost:3307` (usuário `root`, senha `root`) |
+
+O serviço `migrate` roda `prisma migrate deploy` e o seed antes de a API subir. O seed não duplica dados, então pode rodar a cada `up`.
+
+Os valores padrão funcionam sem configuração. Para trocar algum, crie um `.env` na raiz do projeto com as variáveis `JWT_SECRET`, `JWT_EXPIRES_IN`, `CORS_ORIGIN`, `VITE_API_URL`, `MYSQL_ROOT_PASSWORD` ou `MYSQL_DATABASE`. Fora do ambiente local, defina um `JWT_SECRET` próprio.
+
+| Comando | O que faz |
+| --- | --- |
+| `docker compose up -d --build` | Gera as imagens e sobe tudo |
+| `docker compose logs -f backend` | Acompanha os logs da API |
+| `docker compose down` | Para os containers (os dados ficam no volume `mysql_data`) |
+| `docker compose down -v` | Para os containers e apaga o banco |
+
+## Instalação e execução (modo desenvolvimento)
 
 ### 1. Clonar o repositório
 
@@ -63,8 +90,10 @@ cd locacao-veiculos
 Com Docker (cria o MySQL na porta **3307** com o banco `locacao_veiculos` e senha de root `root`):
 
 ```bash
-docker compose up -d
+docker compose up -d mysql
 ```
+
+Informe o serviço `mysql`: sem ele, o Compose também sobe a API e o frontend em containers, ocupando as portas 3333 e 5173.
 
 Sem Docker, crie um banco vazio chamado `locacao_veiculos` no seu MySQL e ajuste a `DATABASE_URL` no próximo passo.
 
