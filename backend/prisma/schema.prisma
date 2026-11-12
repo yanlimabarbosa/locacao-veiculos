@@ -1,0 +1,59 @@
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum StatusLocacao {
+  ATIVA
+  FINALIZADA
+}
+
+model Usuario {
+  id        Int       @id @default(autoincrement())
+  nome      String    @db.VarChar(120)
+  email     String    @unique @db.VarChar(160)
+  senha     String    @db.VarChar(255)
+  criadoEm  DateTime  @default(now()) @map("criado_em")
+  locacoes  Locacao[]
+
+  @@map("usuarios")
+}
+
+model Veiculo {
+  id          Int       @id @default(autoincrement())
+  marca       String    @db.VarChar(60)
+  modelo      String    @db.VarChar(60)
+  placa       String    @unique @db.VarChar(7)
+  ano         Int
+  valorDiaria Decimal   @map("valor_diaria") @db.Decimal(10, 2)
+  disponivel  Boolean   @default(true)
+  criadoEm    DateTime  @default(now()) @map("criado_em")
+  locacoes    Locacao[]
+
+  @@map("veiculos")
+}
+
+model Locacao {
+  id                    Int           @id @default(autoincrement())
+  usuarioId             Int           @map("usuario_id")
+  veiculoId             Int           @map("veiculo_id")
+  dataInicio            DateTime      @map("data_inicio")
+  dataPrevistaDevolucao DateTime      @map("data_prevista_devolucao")
+  dataDevolucao         DateTime?     @map("data_devolucao")
+  quantidadeDiarias     Int           @map("quantidade_diarias")
+  valorTotal            Decimal       @map("valor_total") @db.Decimal(10, 2)
+  status                StatusLocacao @default(ATIVA)
+  criadoEm              DateTime      @default(now()) @map("criado_em")
+  usuario               Usuario       @relation(fields: [usuarioId], references: [id])
+  veiculo               Veiculo       @relation(fields: [veiculoId], references: [id])
+
+  @@index([usuarioId])
+  @@index([veiculoId, status])
+  @@map("locacoes")
+}

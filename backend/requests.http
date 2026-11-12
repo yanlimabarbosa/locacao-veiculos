@@ -1,0 +1,74 @@
+@baseUrl = http://localhost:3333/api
+@token = {{login.response.body.token}}
+
+###
+POST {{baseUrl}}/auth/cadastro
+Content-Type: application/json
+
+{
+  "nome": "Usuário Demonstração",
+  "email": "demo@locadora.com",
+  "senha": "123456"
+}
+
+###
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "yan@locadora.com",
+  "senha": "123456"
+}
+
+###
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+###
+GET {{baseUrl}}/veiculos
+Authorization: Bearer {{token}}
+
+###
+GET {{baseUrl}}/veiculos?disponivel=true
+Authorization: Bearer {{token}}
+
+###
+POST {{baseUrl}}/veiculos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "marca": "Nissan",
+  "modelo": "Kicks",
+  "placa": "NSK2A24",
+  "ano": 2024,
+  "valorDiaria": 199.9
+}
+
+###
+# @name novaLocacao
+POST {{baseUrl}}/locacoes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "veiculoId": 1,
+  "dataInicio": "{{$datetime iso8601 5 m}}",
+  "dataPrevistaDevolucao": "{{$datetime iso8601 2 d}}"
+}
+
+###
+GET {{baseUrl}}/locacoes
+Authorization: Bearer {{token}}
+
+###
+GET {{baseUrl}}/locacoes?status=ATIVA
+Authorization: Bearer {{token}}
+
+###
+PATCH {{baseUrl}}/locacoes/{{novaLocacao.response.body.id}}/finalizar
+Authorization: Bearer {{token}}
+
+###
+GET {{baseUrl}}/veiculos
