@@ -49,6 +49,41 @@ Projeto prático da disciplina **Programação com Frameworks Web**. Sistema web
 - npm 10+
 - Docker e Docker Compose **ou** um MySQL 8 já instalado
 
+## Dados de exemplo (seed)
+
+O seed roda automaticamente no Docker (serviço `migrate`) e com `npm run db:seed` no modo desenvolvimento. Para voltar a esses dados depois de testar, use `npm run db:reset` no `backend/` (modo desenvolvimento) ou `docker compose down -v && docker compose up -d` (Docker).
+
+### Contas de acesso
+
+| Usuário | E-mail | Senha |
+| --- | --- | --- |
+| Yan Lima Barbosa | `yan@locadora.com` | `123456` |
+| Maria Souza | `maria@locadora.com` | `123456` |
+
+Cada usuário vê apenas as próprias locações: entrando como Yan aparece a locação finalizada; entrando como Maria aparece a locação ativa.
+
+### Veículos
+
+| Marca | Modelo | Placa | Ano | Diária | Status |
+| --- | --- | --- | --- | --- | --- |
+| Chevrolet | Onix | `ABC1D23` | 2023 | R$ 129,90 | Disponível |
+| Fiat | Argo | `BRA2E19` | 2022 | R$ 119,90 | Disponível |
+| Hyundai | HB20 | `QWE4R56` | 2024 | R$ 139,90 | Disponível |
+| Jeep | Compass | `JPC7A88` | 2023 | R$ 289,90 | Locado |
+| Toyota | Corolla | `TYT3C41` | 2024 | R$ 259,90 | Disponível |
+| Volkswagen | Polo | `VWP5B12` | 2021 | R$ 124,90 | Disponível |
+| Renault | Kwid | `RNK1234` | 2020 | R$ 89,90 | Disponível |
+| Honda | HR-V | `HND8F77` | 2024 | R$ 249,90 | Disponível |
+
+### Locações
+
+As datas são relativas ao momento em que o seed roda.
+
+| Usuário | Veículo | Período | Diárias | Valor total | Status |
+| --- | --- | --- | --- | --- | --- |
+| Yan Lima Barbosa | Volkswagen Polo | de 10 a 7 dias atrás, devolvido no prazo | 3 | R$ 374,70 | Finalizada |
+| Maria Souza | Jeep Compass | começou há 1 dia, devolução prevista para daqui a 2 dias | 3 | R$ 869,70 | Ativa |
+
 ## Executar com Docker (modo build)
 
 Sobe tudo em containers: o MySQL, as migrations com o seed, a API compilada (`node dist/...`) e o build de produção do frontend servido pelo Nginx.
@@ -137,15 +172,6 @@ npm run dev
 ```
 
 Acesse `http://localhost:5173`.
-
-### Dados de exemplo (seed)
-
-| Usuário | E-mail | Senha |
-| --- | --- | --- |
-| Yan Lima Barbosa | `yan@locadora.com` | `123456` |
-| Maria Souza | `maria@locadora.com` | `123456` |
-
-O seed cria 8 veículos, uma locação **finalizada** do Yan (para mostrar o histórico) e uma locação **ativa** da Maria (o Jeep Compass aparece como locado).
 
 ### Scripts úteis (backend)
 
